@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/carga.dart';
 
 class CargaService {
-  final String _baseUrl = 'http://10.0.2.2:5000/api';
+  final String _baseUrl = 'http://10.0.2.2:8000/api';
 
   Future<List<Carga>> getCargas() async {
     final response = await http.get(Uri.parse('$_baseUrl/cargas'));
