@@ -1,16 +1,53 @@
-# app_comissoes_frontend
+# app-comissoes-frontend
 
-A new Flutter project.
+## ✨ Sobre o Projeto
 
-## Getting Started
+Este é o **front-end** do aplicativo de comissões, construído com **Flutter**. Ele serve como a interface visual para interagir com o backend de gerenciamento de comissões, que está conectado a um banco de dados MySQL no Docker.
 
-This project is a starting point for a Flutter application.
+## 🚀 Tecnologias Principais
 
-A few resources to get you started if this is your first Flutter project:
+- **Flutter**: Para o desenvolvimento da interface de usuário.
+- **Dart**: A linguagem de programação do Flutter.
+- **Comunicação HTTP**: Para se conectar ao seu backend.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠️ Como Rodar o Projeto
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Pré-requisitos
+
+- **Flutter SDK** instalado e configurado.
+- **Git** instalado.
+- Seu **backend** (`app-comissoes-backend`) deve estar rodando e acessível.
+
+### Passos de Execução
+
+1.  **Clone o Repositório:**
+
+    ```bash
+    git clone [https://github.com/klyntonfaustino/app-comissoes-frontend.git](https://github.com/klyntonfaustino/app-comissoes-frontend.git)
+    cd app-comissoes-frontend
+    ```
+
+2.  **Instale as Dependências:**
+
+    ```bash
+    flutter pub get
+    ```
+
+3.  **Configure a URL do Backend:**
+    Você precisa informar ao aplicativo onde seu backend está rodando. Localize o arquivo em seu projeto onde a **URL base da API** está definida (geralmente em `lib/utils/constants.dart`, `lib/config/app_config.dart` ou similar) e **ajuste-a** para o endereço correto do seu backend (ex: `http://127.0.0.1:8000/api`).
+
+4.  **Inicie o Aplicativo:**
+    Conecte um dispositivo, inicie um emulador/simulador, ou use a web:
+    ```bash
+    flutter run
+    ```
+    Ou para um navegador específico:
+    ```bash
+    flutter run -d chrome
+    ```
+
+## ✉️ Contato
+
+Se tiver dúvidas, pode entrar em contato:
+
+- **Klynton Faustino** - [Seu Perfil do GitHub](https://github.com/klyntonfaustino)
