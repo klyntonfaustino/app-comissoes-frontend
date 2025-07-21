@@ -55,6 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: cargas.length,
               itemBuilder: (context, index) {
                 final carga = cargas[index];
+
+                print(
+                    'DEBUG: Carga ID: ${carga.id}, Descrição: ${carga.descricao}, Comissão (raw): ${carga.comissao}');
+
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   elevation: 4.0,
@@ -73,10 +77,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 8.0),
                         Text('Valor: R\$ ${carga.valor.toStringAsFixed(2)}'),
                         Text(
-                          'Percentual: ${carga.percentual.toStringAsFixed(2)}%',
+                          'Percentual: ${carga.percentualComissao.toStringAsFixed(2)}%',
                         ),
                         Text(
-                          'Comissão: R\$ ${carga.comissao.toStringAsFixed(2)}',
+                          'Comissão: R\$ ${carga.comissao?.toStringAsFixed(2) ?? 'N/A'}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.green,

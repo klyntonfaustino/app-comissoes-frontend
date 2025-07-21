@@ -1,22 +1,44 @@
+//Carga service
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/carga.dart';
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:intl/intl.dart';
 
 class CargaService {
-  final String _baseUrl = 'http://10.0.2.2:8000/api';
+  late final String _baseUrl;
+
+  CargaService() {
+    if (kIsWeb) {
+      _baseUrl = 'http://localhost:8000/api'; // para web
+    } else if (Platform.isAndroid) {
+      _baseUrl = 'http://10.0.2.2:8000/api'; // para android
+    } else if (Platform.isIOS) {
+      _baseUrl = 'http://localhost:8000/api'; // para iOS
+    } else {
+      _baseUrl =
+          'http://localhost:8000/api'; // para desktop (Windows, macOS, Linux)
+    }
+    print('Base URL configurada para: $_baseUrl');
+  }
 
   Future<List<Carga>> getCargas() async {
+    print('Enviando GET para $_baseUrl/cargas');
     final response = await http.get(Uri.parse('$_baseUrl/cargas'));
 
     if (response.statusCode == 200) {
       List<dynamic> body = json.decode(response.body);
       return body.map((dynamic item) => Carga.fromJson(item)).toList();
     } else {
-      throw Exception('Falha ao carregar as cargas: ${response.statusCode}');
+      print(
+          'Erro ao carregar cargas: Status ${response.statusCode}, Body: ${response.body}');
+      throw Exception('Falha ao carregar cargas: ${response.statusCode}');
     }
   }
 
-  Future<Carga> addCarga(Carga carga) async {
+  Future<Carga> addCargas(Carga carga) async {
+    print('Enviando POST para: $_baseUrl/cargas com dados: ${carga.toJson()}');
     final response = await http.post(
       Uri.parse('$_baseUrl/cargas'),
       headers: {'Content-Type': 'application/json'},
@@ -24,9 +46,13 @@ class CargaService {
     );
 
     if (response.statusCode == 201) {
+      print('Carga adicionada com sucesso: ${response.body}');
       return Carga.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Falha ao adicionar carga: ${response.statusCode}');
+      print(
+          'Erro ao adicionar carga: Status ${response.statusCode}, Detalhes: ${response.body}');
+      throw Exception(
+          'Falha ao adicionar carga: ${response.statusCode}, Detalhes: ${response.body}');
     }
   }
 }

@@ -1,5 +1,7 @@
+// lib/screens/nova_carga_screen.dart
 import 'package:flutter/material.dart';
-import '../models/carga.dart'; // ajusta o caminho se necessário
+import 'package:intl/intl.dart';
+import '../models/carga.dart';
 import '../services/carga_service.dart';
 
 class NovaCargaScreen extends StatefulWidget {
@@ -17,8 +19,53 @@ class _NovaCargaScreenState extends State<NovaCargaScreen> {
   final TextEditingController _valorController = TextEditingController();
   final TextEditingController _percentualController = TextEditingController();
 
+  // Variáveis e controlador para a data
+  DateTime? _selectedDate;
+  final TextEditingController _dateController = TextEditingController();
+
   // Instância do serviço de cargas
   final CargaService _cargaService = CargaService();
+
+  @override
+  void initState() {
+    super.initState();
+    _descricaoController.addListener(() {
+      setState(() {});
+    });
+    _valorController.addListener(() {
+      setState(() {});
+    });
+    _percentualController.addListener(() {
+      setState(() {});
+    });
+
+    _selectedDate = DateTime.now();
+    _dateController.text = DateFormat('yyyy-MM-dd').format(_selectedDate!);
+  }
+
+  @override
+  void dispose() {
+    _descricaoController.dispose();
+    _valorController.dispose();
+    _percentualController.dispose();
+    _dateController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+        _dateController.text = DateFormat('yyyy-MM-dd').format(_selectedDate!);
+      });
+    }
+  }
 
   Future<void> _salvarCarga() async {
     if (_formKey.currentState!.validate()) {
@@ -27,13 +74,26 @@ class _NovaCargaScreenState extends State<NovaCargaScreen> {
         final double valor = double.parse(_valorController.text);
         final double percentual = double.parse(_percentualController.text);
 
+        if (_selectedDate == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Por favor, selecione a data da carga.')),
+          );
+          return;
+        }
+        final String dataCargaStr =
+            DateFormat('yyyy-MM-dd').format(_selectedDate!);
+
         final novaCarga = Carga(
           descricao: descricao,
           valor: valor,
-          percentual: percentual,
+          percentualComissao: percentual,
+          dataCarga: dataCargaStr,
+          id: null,
+          comissao: null,
         );
 
-        await _cargaService.addCarga(novaCarga);
+        await _cargaService.addCargas(novaCarga);
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Carga adicionada com sucesso!')),
@@ -49,14 +109,6 @@ class _NovaCargaScreenState extends State<NovaCargaScreen> {
         ).showSnackBar(SnackBar(content: Text('Erro ao adicionar carga: $e')));
       }
     }
-  }
-
-  @override
-  void dispose() {
-    _descricaoController.dispose();
-    _valorController.dispose();
-    _percentualController.dispose();
-    super.dispose();
   }
 
   @override
@@ -118,6 +170,23 @@ class _NovaCargaScreenState extends State<NovaCargaScreen> {
                   }
                   if (double.tryParse(value) == null) {
                     return 'Por favor, insira um número válido';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _dateController,
+                readOnly: true,
+                onTap: () => _selectDate(context),
+                decoration: const InputDecoration(
+                  labelText: 'Data da Carga',
+                  border: OutlineInputBorder(),
+                  suffixIcon: Icon(Icons.calendar_today),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, selecione a data da carga';
                   }
                   return null;
                 },
