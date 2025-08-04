@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/carga.dart';
+import '../models/dashbord_summary.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
@@ -55,4 +56,19 @@ class CargaService {
           'Falha ao adicionar carga: ${response.statusCode}, Detalhes: ${response.body}');
     }
   }
+
+  Future<DashbordSummary> getDashbordSummary() async {
+    print('Enviando GET para: $_baseUrl/dashboard/summary');
+    final response = await http.get(Uri.parse('$_baseUrl/dashboard/summary'));
+
+    if (response.statusCode == 200) {
+      return DashbordSummary.fromJson(json.decode(response.body));
+    } else {   
+      print('Erro ao carregar resumo: Status ${response.statusCode}, Body: ${response.body}');
+      throw Exception('Falha ao carregar resumo do dashboard: ${response.statusCode}');
+    }
+  }
 }
+
+
+
