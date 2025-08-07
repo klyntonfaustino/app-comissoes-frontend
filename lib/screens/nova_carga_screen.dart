@@ -125,84 +125,143 @@ class _NovaCargaScreenState extends State<NovaCargaScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              TextFormField(
-                controller: _descricaoController,
-                decoration: const InputDecoration(
-                  labelText: 'Descrição',
-                  border: OutlineInputBorder(),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira a descrição';
-                  }
-                  return null;
-                },
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: TextFormField(
+                  controller: _descricaoController,
+                  decoration: const InputDecoration(
+                    hintText: 'Número da Carga',
+                    border: InputBorder.none,
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira o número da carga';
+                    }
+                    return null;
+                  },
+                ),
               ),
               const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _valorController,
-                decoration: const InputDecoration(
-                  labelText: 'Valor',
-                  border: OutlineInputBorder(),
+              Card(
+                elevation: 0,
+                color: Colors.grey[200],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  child: TextFormField(
+                    controller: _valorController,
+                    decoration: const InputDecoration(
+                      hintText: 'Valor da Carga',
+                      border: InputBorder.none,
+                    ),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, insira o valor';
+                      }
+                      if (double.tryParse(value) == null) {
+                        return 'Por favor, insira um número válido';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira o valor';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Por favor, insira um número válido';
-                  }
-                  return null;
-                },
               ),
               const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _percentualController,
-                decoration: const InputDecoration(
-                  labelText: 'Percentual',
-                  border: OutlineInputBorder(),
+              Card(
+                elevation: 0,
+                color: Colors.grey[200],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  child: TextFormField(
+                    controller: _percentualController,
+                    decoration: const InputDecoration(
+                      hintText: 'Percentual de Comissão',
+                      border: InputBorder.none,
+                    ),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, insira o percentual';
+                      }
+                      if (double.tryParse(value) == null) {
+                        return 'Por favor, insira um número válido';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira o percentual';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Por favor, insira um número válido';
-                  }
-                  return null;
-                },
               ),
               const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _dateController,
-                readOnly: true,
-                onTap: () => _selectDate(context),
-                decoration: const InputDecoration(
-                  labelText: 'Data da Carga',
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.calendar_today),
+              Card(
+                elevation: 0,
+                color: Colors.grey[200],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  child: TextFormField(
+                    controller: _dateController,
+                    readOnly: true,
+                    onTap: () => _selectDate(context),
+                    decoration: const InputDecoration(
+                      hintText: 'Data da Carga',
+                      border: InputBorder.none,
+                      suffixIcon:
+                          Icon(Icons.calendar_today, color: Colors.black54),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, selecione a data da carga';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, selecione a data da carga';
-                  }
-                  return null;
-                },
               ),
               const SizedBox(height: 24.0),
-              ElevatedButton(
-                onPressed: _salvarCarga,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text(
-                  'Salvar Carga',
-                  style: TextStyle(fontSize: 18.0),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        backgroundColor: Colors.grey[800],
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('Historico',
+                          style: TextStyle(fontSize: 18)),
+                    ),
+                  ),
+                  const SizedBox(width: 16.0),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _salvarCarga,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        backgroundColor: Colors.green[800],
+                        foregroundColor: Colors.white,
+                      ),
+                      child:
+                          const Text('Salvar', style: TextStyle(fontSize: 18)),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
